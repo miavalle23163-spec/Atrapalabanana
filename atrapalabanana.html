@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Atrapa la banana</title>
+    <style>
+        body {
+            background: #f7f7a8;
+            overflow: hidden;
+            margin: 0;
+            font-family: Arial;
+        }
+        #minion {
+            width: 120px;
+            position: absolute;
+            bottom: 10px;
+            left: 45%;
+        }
+        #banana {
+            width: 60px;
+            position: absolute;
+            top: -100px;
+        }
+        #score {
+            font-size: 25px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+<p id="score">Puntos: 0</p>
+<img id="minion" src="bob.png">
+<img id="banana" src="banana.png">
+<script>
+    const minion = document.getElementById("minion");
+    const banana = document.getElementById("banana");
+    const scoreText = document.getElementById("score");
+    let puntos = 0;
+    let xMinion = window.innerWidth / 2;
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") xMinion -= 20;
+        if (e.key === "ArrowRight") xMinion += 20;
+
+        minion.style.left = xMinion + "px";
+    });
+    function caerBanana() {
+        let xBanana = Math.random() * (window.innerWidth - 60);
+        let yBanana = -100;
+        banana.style.left = xBanana + "px";
+        banana.style.top = yBanana + "px";
+        let caida = setInterval(() => {
+            yBanana += 5;
+            banana.style.top = yBanana + "px";
+            if (yBanana > window.innerHeight - 150 &&
+                Math.abs(xBanana - xMinion) < 80) {
+
+                puntos++;
+                scoreText.innerText = "Puntos: " + puntos;
+                clearInterval(caida);
+                caerBanana();
+            }
+            if (yBanana > window.innerHeight) {
+                clearInterval(caida);
+                caerBanana();
+            }
+        }, 20);
+    }
+    caerBanana();
+</script>
+</body>
+</html>
